@@ -26,24 +26,24 @@ app.use(cors())
 
 app.use(express.json())
 
-morgan.token('body', (req, res) => JSON.stringify(req.body))
-app.use(morgan(':method :url :status :res[content-length] :body'))
+morgan.token('body', (req) => JSON.stringify(req.body))
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 
 app.get('/api/persons', (req, res) => {
-    Person.find({}).then(persons => {
-      res.json(persons)
-    })
+  Person.find({}).then(persons => {
+    res.json(persons)
   })
+})
 
 app.get('/info', (req, res, next) => {
   const timestamp = new Date()
   Person.countDocuments({})
-  .then(count => {
-    res.send(`<p>Phonebook has info for ${count} people</p>
+    .then(count => {
+      res.send(`<p>Phonebook has info for ${count} people</p>
       <p>${timestamp}</p>`)
-  })
-  .catch(error => next(error))
+    })
+    .catch(error => next(error))
 })
 
 app.get('/api/persons/:id', (req, res, next) => {
@@ -59,12 +59,12 @@ app.get('/api/persons/:id', (req, res, next) => {
 })
 
 app.delete('/api/persons/:id', (req, res, next) => {
-    Person.findByIdAndDelete(req.params.id)
-      .then(result => {
-        res.status(204).end()
-      })
-      .catch(error => next(error))
-  })
+  Person.findByIdAndDelete(req.params.id)
+    .then(() => {
+      res.status(204).end()
+    })
+    .catch(error => next(error))
+})
 
 
 app.post('/api/persons', (req, res, next) => {
@@ -76,7 +76,7 @@ app.post('/api/persons', (req, res, next) => {
   person.save().then(savedPerson => {
     res.json(savedPerson)
   })
-  .catch(error => next(error))
+    .catch(error => next(error))
 })
 
 app.put('/api/persons/:id', (req, res, next) => {
@@ -85,7 +85,7 @@ app.put('/api/persons/:id', (req, res, next) => {
     name: body.name,
     number: body.number
   }
-  Person.findByIdAndUpdate(req.params.id, person, {new: true, runValidators: true, context: 'query'})
+  Person.findByIdAndUpdate(req.params.id, person, { new: true, runValidators: true, context: 'query' })
     .then(updatedPerson => {
       res.json(updatedPerson)
     })
@@ -98,5 +98,5 @@ app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
+  console.log(`Server running on port ${PORT}`)
 })
