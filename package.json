@@ -7,14 +7,17 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:ui": "rm -rf build && cd ~/FullStack-palautusrepositorio/osa2/puhelinluettelo && npm run build && cp -r build ~/FullStack3-palautusrepositorio",
+    "build:ui": "rm -rf build && cd ~/FullStack-palautusrepositorio/osa2/puhelinluettelo && npm run build && cp -r dist ~/FullStack3-palautusrepositorio",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
   "author": "Sanni Tuomisto",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "mongodb": "^6.3.0",
+    "mongoose": "^8.0.3",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
